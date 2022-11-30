@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_button_label_margin">8dp</dimen>
+    <dimen name="main_activity_arrow_size">48dp</dimen>
+    <dimen name="icon_button_size">48dp</dimen>
+    <dimen name="icon_button_bottom_margin">96dp</dimen>
+    <dimen name="main_activity_greeting_top_margin">96dp</dimen>
+    <dimen name="main_activity_greeting_text_size">24sp</dimen>
+    <item name="main_activity_greeting_line_height" type="dimen" format="float">32</item>
+</resources>
