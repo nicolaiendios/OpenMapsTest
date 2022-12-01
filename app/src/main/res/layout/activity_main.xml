@@ -21,7 +21,6 @@
         android:id="@+id/main_activity_arrow"
         android:layout_width="@dimen/main_activity_arrow_size"
         android:layout_height="@dimen/main_activity_arrow_size"
-        android:rotation="45"
         android:src="@drawable/ic_baseline_arrow_downward_24"
         app:layout_constraintBottom_toTopOf="@id/main_activity_open_mobile_button"
         app:layout_constraintEnd_toEndOf="parent"

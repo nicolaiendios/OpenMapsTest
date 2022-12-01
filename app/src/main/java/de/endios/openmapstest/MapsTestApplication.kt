@@ -10,3 +10,8 @@ class MapsTestApplication : Application() {
         MapsCore.initialize()
     }
 }
+
+/**
+ * Creates an Log Tag String which is often useful when logging
+ */
+inline val Any.TAG: String get() = this.javaClass.javaClass.simpleName
