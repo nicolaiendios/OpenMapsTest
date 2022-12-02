@@ -83,7 +83,7 @@ class OpenMobileMapsActivity : AppCompatActivity() {
         // Defines the url-pattern to load tiles. Enter a valid OSM tile server here
         override fun getTileUrl(x: Int, y: Int, zoom: Int): String {
             Log.d(TAG, "getTileUrl x:$x , y:$y , zoom:$zoom")
-            val tileUrl = "https://tile.openstreetmap.org/15/$x/$y.png"
+            val tileUrl = "https://tile.openstreetmap.org/$zoom/$x/$y.png"
             Log.d(TAG, "tileUrl:$tileUrl")
             return tileUrl
         }
