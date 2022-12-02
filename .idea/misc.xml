@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_place_24.xml" value="0.247" />
+        <entry key="app/src/main/res/drawable/ic_baseline_power_off_24.xml" value="0.247" />
         <entry key="app/src/main/res/drawable/ic_logo_open_mobile_maps.xml" value="0.247" />
         <entry key="app/src/main/res/drawable/ic_logo_open_street_maps.xml" value="0.247" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/activity_main_omm.xml" value="0.3875" />
+        <entry key="app/src/main/res/layout/activity_map_libre.xml" value="0.3046875" />
         <entry key="app/src/main/res/layout/activity_open_mobile_maps.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/activity_open_street_maps.xml" value="0.3203125" />
       </map>

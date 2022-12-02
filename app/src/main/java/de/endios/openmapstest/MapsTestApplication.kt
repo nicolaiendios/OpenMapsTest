@@ -14,4 +14,4 @@ class MapsTestApplication : Application() {
 /**
  * Creates an Log Tag String which is often useful when logging
  */
-inline val Any.TAG: String get() = this.javaClass.javaClass.simpleName
+val Any.TAG: String get() = javaClass.simpleName

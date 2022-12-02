@@ -4,17 +4,25 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.endios.openmapstest.R
 import de.endios.openmapstest.TAG
 import de.endios.openmapstest.databinding.ActivityOpenMobileMapsBinding
+import io.openmobilemaps.mapscore.graphics.BitmapTextureHolder
 import io.openmobilemaps.mapscore.map.loader.DataLoader
 import io.openmobilemaps.mapscore.map.view.MapView
+import io.openmobilemaps.mapscore.shared.graphics.common.Vec2F
 import io.openmobilemaps.mapscore.shared.map.MapConfig
 import io.openmobilemaps.mapscore.shared.map.coordinates.Coord
 import io.openmobilemaps.mapscore.shared.map.coordinates.CoordinateSystemFactory
 import io.openmobilemaps.mapscore.shared.map.coordinates.CoordinateSystemIdentifiers
 import io.openmobilemaps.mapscore.shared.map.coordinates.MapCoordinateSystem
 import io.openmobilemaps.mapscore.shared.map.coordinates.RectCoord
+import io.openmobilemaps.mapscore.shared.map.layers.icon.IconFactory
+import io.openmobilemaps.mapscore.shared.map.layers.icon.IconInfoInterface
+import io.openmobilemaps.mapscore.shared.map.layers.icon.IconLayerCallbackInterface
+import io.openmobilemaps.mapscore.shared.map.layers.icon.IconLayerInterface
+import io.openmobilemaps.mapscore.shared.map.layers.icon.IconType
 import io.openmobilemaps.mapscore.shared.map.layers.tiled.Tiled2dMapLayerConfig
 import io.openmobilemaps.mapscore.shared.map.layers.tiled.Tiled2dMapZoomInfo
 import io.openmobilemaps.mapscore.shared.map.layers.tiled.Tiled2dMapZoomLevelInfo
@@ -24,6 +32,12 @@ import io.openmobilemaps.mapscore.shared.map.layers.tiled.raster.Tiled2dMapRaste
 class OpenMobileMapsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOpenMobileMapsBinding
+
+    private val hamburgCoord = Coord(
+        CoordinateSystemIdentifiers.EPSG4326(),
+        9.993353827849486,53.54562942702277,
+        0.0
+    )
 
     private val epsg3857Bounds: RectCoord = RectCoord(
         Coord(CoordinateSystemIdentifiers.EPSG3857(), -20037508.34, 20037508.34, 0.0),
@@ -69,10 +83,11 @@ class OpenMobileMapsActivity : AppCompatActivity() {
         // Defines the url-pattern to load tiles. Enter a valid OSM tile server here
         override fun getTileUrl(x: Int, y: Int, zoom: Int): String {
             Log.d(TAG, "getTileUrl x:$x , y:$y , zoom:$zoom")
-            return "https://api.maptiler.com/maps/openstreetmap/$zoom/$x/$y.jpg?key=SchTzAHmj8pPeHExECXA"
+            val tileUrl = "https://tile.openstreetmap.org/15/$x/$y.png"
+            Log.d(TAG, "tileUrl:$tileUrl")
+            return tileUrl
         }
 
-        //"https://tile.openstreetmap.org/$zoom/$x/$y.png"
 
         // Defines both an additional scale factor for the tiles, as well as how many
         // layers above the ideal one should be loaded an displayed as well.
@@ -96,19 +111,35 @@ class OpenMobileMapsActivity : AppCompatActivity() {
 
         val textureLoader = DataLoader(this, cacheDir, 50L * 1024L * 1024L, "")
         val tiledLayer = Tiled2dMapRasterLayerInterface.create(layerConfig, textureLoader)
-        binding.mapView.apply {
-            setupMap(MapConfig(CoordinateSystemFactory.getEpsg3857System()))
-            registerLifecycle(lifecycle)
-            addLayer(tiledLayer.asLayerInterface())
-            getCamera().moveToCenterPositionZoom(
-                Coord(
-                    CoordinateSystemIdentifiers.EPSG4326(),
-                    8.378232525377973,
-                    46.962592372639634,
-                    0.0
-                ),
-                10.0, true
-            )
+        val iconDrawable = ContextCompat.getDrawable(this, R.drawable.ic_electro_marker)!!
+        binding.apply {
+            mapView.apply {
+                setupMap(MapConfig(CoordinateSystemFactory.getEpsg3857System()))
+                registerLifecycle(lifecycle)
+                addLayer(tiledLayer.asLayerInterface())
+
+                val iconLayer = IconLayerInterface.create()
+                val texture = BitmapTextureHolder(iconDrawable)
+                val icon = IconFactory.createIcon(
+                    identifier = "Icon",
+                    coordinate = hamburgCoord,
+                    texture = texture,
+                    iconSize = Vec2F(200f, 200f),
+                    scaleType = IconType.INVARIANT
+                )
+                iconLayer.add(icon)
+                iconLayer.setCallbackHandler(object : IconLayerCallbackInterface() {
+                    override fun onClickConfirmed(icons: ArrayList<IconInfoInterface>): Boolean {
+                        // React and return true if handled
+                        return true
+                    }
+                })
+                mapView.addLayer(iconLayer.asLayerInterface())
+
+            }
+            zoomButton.setOnClickListener {
+                mapView.getCamera().moveToCenterPositionZoom(hamburgCoord, 10000000.0, false)
+            }
         }
     }
 }

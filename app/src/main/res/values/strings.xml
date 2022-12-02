@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Endios One OSM Test</string>
+    <string name="zoom_in_button">Zoom in</string>
 </resources>
